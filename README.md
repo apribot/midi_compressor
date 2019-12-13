@@ -6,5 +6,4 @@ Specifically for the Yamaha EZ-EG, probably others... who knows!
 
 ------------
  
-Converts all midi in channels to channel 1
-Converts all out velocities to max
+Converts all midi in channels to channel 1 -and- converts all out velocities to max
