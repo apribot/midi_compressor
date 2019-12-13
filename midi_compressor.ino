@@ -1,22 +1,33 @@
-boolean byteReady; 
-unsigned char midiByte;
 
-void setup() {
-    Serial.begin(31250);
-    byteReady = false;
-    midiByte = 0;  
+#include <MIDI.h>
+
+MIDI_CREATE_DEFAULT_INSTANCE();
+
+void setup() 
+{
+  MIDI.begin(MIDI_CHANNEL_OMNI);  
 }
 
-void loop() {
-   if (byteReady) {
-        byteReady = false;
-        Serial.write(midiByte);
-    }
-}
-
-void serialEvent() {
-  if (Serial.available()) {
-    midiByte = (unsigned char)Serial.read();
-    byteReady = true;
+void loop()
+{
+  if (MIDI.read()) {
+    // get NoteOn event
+    // ... there's an enum in midi_Defs.h for this
+    // but i'm not smart enough to figure it out
+    if(MIDI.getType() == 0x90) {
+      MIDI.send(
+        MIDI.getType(),
+        MIDI.getData1(),
+        0x7f, // force to max velocity
+        MIDI.getChannel()
+      );
+    } else { 
+      MIDI.send(
+        MIDI.getType(),
+        MIDI.getData1(),
+        MIDI.getData2(),
+        MIDI.getChannel()
+      );
+    }    
   }
 }
