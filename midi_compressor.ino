@@ -13,8 +13,7 @@ void loop()
 {
   if (MIDI.read()) {
     // get NoteOn event
-    // ... there's an enum in midi_Defs.h for this
-    // but i'm not smart enough to figure it out
+    // and ignore alternate "0 velocity noteOn" note off
     if(MIDI.getType() == 0x90 && MIDI.getData2() > 0x00) {
       MIDI.send(
         MIDI.getType(),
